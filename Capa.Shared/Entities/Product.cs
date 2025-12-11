@@ -28,7 +28,7 @@ namespace Capa.Shared.Entities
         [Display(Name = "Inventario")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public float Stock { get; set; }
-        public Category? Category { get; set; }
+        public Category Category { get; set; } = null!;
 
         [Display(Name = "Categoria")]
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una {0}.")]
