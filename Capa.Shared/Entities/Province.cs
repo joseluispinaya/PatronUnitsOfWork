@@ -14,5 +14,7 @@ namespace Capa.Shared.Entities
         public int DepartmentId { get; set; }
 
         public Department? Department { get; set; }
+
+        public ICollection<User>? Users { get; set; }
     }
 }

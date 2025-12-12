@@ -17,6 +17,12 @@ namespace Capa.Backend.Controllers
             _departmentsUnitOfWork = departmentsUnitOfWork;
         }
 
+        [HttpGet("combo")]
+        public async Task<IActionResult> GetComboAsync()
+        {
+            return Ok(await _departmentsUnitOfWork.GetComboAsync());
+        }
+
         [HttpGet]
         public override async Task<IActionResult> GetAsync()
         {

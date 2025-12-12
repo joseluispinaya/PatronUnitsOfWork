@@ -8,8 +8,17 @@ namespace Capa.Backend.Controllers
     [Route("api/[controller]")]
     public class ProvincesController : GenericController<Province>
     {
-        public ProvincesController(IGenericUnitOfWork<Province> unitOfWork) : base(unitOfWork)
+        private readonly IProvincesUnitOfWork _provincessUnitOfWork;
+        public ProvincesController(IGenericUnitOfWork<Province> unitOfWork, IProvincesUnitOfWork provincessUnitOfWork) : base(unitOfWork)
         {
+            _provincessUnitOfWork = provincessUnitOfWork;
         }
+
+        [HttpGet("combo/{departmentId:int}")]
+        public async Task<IActionResult> GetComboAsync(int departmentId)
+        {
+            return Ok(await _provincessUnitOfWork.GetComboAsync(departmentId));
+        }
+
     }
 }
