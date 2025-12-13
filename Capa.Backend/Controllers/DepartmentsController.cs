@@ -1,5 +1,6 @@
 ﻿using Capa.Backend.Data;
 using Capa.Backend.UnitsOfWork.Intefaces;
+using Capa.Shared.DTOs;
 using Capa.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,17 @@ namespace Capa.Backend.Controllers
         public async Task<IActionResult> GetComboAsync()
         {
             return Ok(await _departmentsUnitOfWork.GetComboAsync());
+        }
+
+        [HttpGet("paginated")]
+        public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+        {
+            var response = await _departmentsUnitOfWork.GetAsync(pagination);
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
         }
 
         [HttpGet]

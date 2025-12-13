@@ -1,9 +1,14 @@
-﻿using Capa.Shared.Responses;
+﻿using Capa.Shared.DTOs;
+using Capa.Shared.Responses;
 
 namespace Capa.Backend.UnitsOfWork.Intefaces
 {
     public interface IGenericUnitOfWork<T> where T : class
     {
+        Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination);
+
         Task<ActionResponse<T>> GetAsync(int id);
 
         Task<ActionResponse<IEnumerable<T>>> GetAsync();

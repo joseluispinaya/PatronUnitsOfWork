@@ -1,5 +1,6 @@
 ﻿using Capa.Backend.Repositories.Intefaces;
 using Capa.Backend.UnitsOfWork.Intefaces;
+using Capa.Shared.DTOs;
 using Capa.Shared.Entities;
 using Capa.Shared.Responses;
 
@@ -13,6 +14,8 @@ namespace Capa.Backend.UnitsOfWork.Implementations
         {
             _departmentsRepository = departmentsRepository;
         }
+
+        public override async Task<ActionResponse<IEnumerable<Department>>> GetAsync(PaginationDTO pagination) => await _departmentsRepository.GetAsync(pagination);
 
         public async Task<IEnumerable<Department>> GetComboAsync() => await _departmentsRepository.GetComboAsync();
 
