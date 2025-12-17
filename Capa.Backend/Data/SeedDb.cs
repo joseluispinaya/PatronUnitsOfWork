@@ -21,7 +21,7 @@ namespace Capa.Backend.Data
             await CheckDepartmentAsync();
             await CheckCategoriesAsync();
             await CheckRolesAsync();
-            await CheckUserAsync("7645323", "Jose", "Pinaya", "jose@yopmail.com", "739 997 726", "Calle Luna Calle Sol", UserType.Admin);
+            await CheckUserAsync("7645323", "Jose", "Pinaya", "jose@yopmail.com", "73999726", "Calle Luna Calle Sol", UserType.Admin);
         }
 
         private async Task<User> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address, UserType userType)
@@ -90,8 +90,10 @@ namespace Capa.Backend.Data
                         [
                             new Province { Name = "Vaca Diez" },
                             new Province { Name = "Cercado" },
+                            new Province { Name = "Mamore" },
                             new Province { Name = "Moxos" },
                             new Province { Name = "Marbán" },
+                            new Province { Name = "Itenez" },
                             new Province { Name = "Yacuma" }
                         ]
                     },
@@ -100,6 +102,11 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Arani" },
+                            new Province { Name = "Arque" },
+                            new Province { Name = "Bolivar" },
+                            new Province { Name = "Capinota" },
+                            new Province { Name = "Chapare" },
+                            new Province { Name = "Esteban Arze" },
                             new Province { Name = "Ayopaya" }
                         ]
                     },
@@ -108,6 +115,11 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Chiquitos" },
+                            new Province { Name = "Cordillera" },
+                            new Province { Name = "Florida" },
+                            new Province { Name = "Ichilo" },
+                            new Province { Name = "Warnes" },
+                            new Province { Name = "Velasco" },
                             new Province { Name = "Obispo Santiesteban" }
                         ]
                     },
@@ -116,6 +128,8 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Abuna" },
+                            new Province { Name = "Nicolas Suarez" },
+                            new Province { Name = "Madre de Dios" },
                             new Province { Name = "Manuripi" }
                         ]
                     },
@@ -124,6 +138,10 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Sabaya" },
+                            new Province { Name = "Cercado" },
+                            new Province { Name = "Sajama" },
+                            new Province { Name = "Poopo" },
+                            new Province { Name = "Mejillones" },
                             new Province { Name = "Carangas" }
                         ]
                     },
@@ -132,6 +150,11 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Aroma" },
+                            new Province { Name = "Franz Tamayo" },
+                            new Province { Name = "Nor Yungas" },
+                            new Province { Name = "Omasuyos" },
+                            new Province { Name = "Ingavi" },
+                            new Province { Name = "Sud Yungas" },
                             new Province { Name = "Caranavi" }
                         ]
                     },
@@ -140,6 +163,7 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Aniceto Arce" },
+                            new Province { Name = "Lago Titicaca" },
                             new Province { Name = "Gran Chaco" }
                         ]
                     },
@@ -148,6 +172,9 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Oropeza" },
+                            new Province { Name = "Luis Calvo" },
+                            new Province { Name = "Nor Cinti" },
+                            new Province { Name = "Sud Cinti" },
                             new Province { Name = "Yamparaez" }
                         ]
                     },
@@ -156,6 +183,8 @@ namespace Capa.Backend.Data
                         Provinces =
                         [
                             new Province { Name = "Sud Lipez" },
+                            new Province { Name = "Sud Chinchas" },
+                            new Province { Name = "Tomas Frias" },
                             new Province { Name = "Charcas" }
                         ]
                     }

@@ -43,7 +43,7 @@ namespace Capa.Backend.Controllers
             {
                 return Ok(action.Result);
             }
-            return BadRequest(action.Message);
+            return BadRequest();
         }
 
         [HttpGet("{id}")]

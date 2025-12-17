@@ -84,8 +84,10 @@ namespace Capa.Backend.Controllers
         {
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Name, user.Email!),
-                new(ClaimTypes.Role, user.UserType.ToString()),
+                //new(ClaimTypes.Name, user.Email!),
+                new("Email", user.Email!),
+                //new(ClaimTypes.Role, user.UserType.ToString()),
+                new("Role", user.UserType.ToString()),
                 new("FirstName", user.FirstName),
                 new("LastName", user.LastName),
                 new("Photo", user.Photo ?? string.Empty),

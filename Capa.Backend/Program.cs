@@ -78,7 +78,9 @@ builder.Services.AddScoped<IProvincesRepository, ProvincesRepository>();
 builder.Services.AddScoped<IProvincesUnitOfWork, ProvincesUnitOfWork>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
-//builder.Services.AddScoped<IProvincesUnitOfWork, ProvincesUnitOfWork>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddScoped<ICategoriesUnitOfWork, CategoriesUnitOfWork>();
+//builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
@@ -112,6 +114,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
+
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
@@ -119,6 +123,7 @@ app.UseCors(x => x
     .AllowCredentials());
 
 app.UseHttpsRedirection();
+//app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

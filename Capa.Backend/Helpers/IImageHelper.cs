@@ -3,5 +3,6 @@
     public interface IImageHelper
     {
         Task<string> UploadImageAsync(IFormFile? imageFile, string folder);
+        Task DeleteImage(string imagePath, string folder);
     }
 }
