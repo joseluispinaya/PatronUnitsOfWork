@@ -1,11 +1,18 @@
 ﻿using Capa.Shared.DTOs;
 using Capa.Shared.Entities;
+using Capa.Shared.Responses;
 using Microsoft.AspNetCore.Identity;
 
 namespace Capa.Backend.UnitsOfWork.Intefaces
 {
     public interface IUsersUnitOfWork
     {
+        Task<ActionResponse<IEnumerable<User>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<IEnumerable<ListUsersDTO>>> GetListAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination);
+
         Task<SignInResult> LoginAsync(LoginDTO model);
 
         Task LogoutAsync();

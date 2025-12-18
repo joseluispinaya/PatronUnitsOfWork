@@ -30,10 +30,11 @@ namespace Capa.Backend.Repositories.Implementations
                 .Include(x => x.Products)
                 .AsQueryable();
 
-            // if (!string.IsNullOrWhiteSpace(pagination.Filter))
-            // {
-            //     queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
-            // }
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x =>
+                    EF.Functions.Like(x.Name, $"%{pagination.Filter}%"));
+            }
 
             return new ActionResponse<IEnumerable<Category>>
             {
@@ -49,16 +50,18 @@ namespace Capa.Backend.Repositories.Implementations
         {
             var queryable = _context.Categories.AsQueryable();
 
-            // if (!string.IsNullOrWhiteSpace(pagination.Filter))
-            // {
-            //     queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
-            // }
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x =>
+                    EF.Functions.Like(x.Name, $"%{pagination.Filter}%"));
+            }
 
-            double count = await queryable.CountAsync();
+            int count = await queryable.CountAsync();
+
             return new ActionResponse<int>
             {
                 WasSuccess = true,
-                Result = (int)count
+                Result = count
             };
         }
 

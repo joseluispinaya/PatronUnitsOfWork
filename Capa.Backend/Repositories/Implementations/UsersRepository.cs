@@ -1,7 +1,9 @@
 ﻿using Capa.Backend.Data;
+using Capa.Backend.Helpers;
 using Capa.Backend.Repositories.Intefaces;
 using Capa.Shared.DTOs;
 using Capa.Shared.Entities;
+using Capa.Shared.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -77,5 +79,98 @@ namespace Capa.Backend.Repositories.Implementations
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<ActionResponse<IEnumerable<User>>> GetAsync(PaginationDTO pagination)
+        {
+            IQueryable<User> queryable = _context.Users
+                .Include(x => x.Province);
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                string filter = pagination.Filter.Trim();
+
+                queryable = queryable.Where(x =>
+                    EF.Functions.Like(x.FirstName, $"%{filter}%") ||
+                    EF.Functions.Like(x.LastName, $"%{filter}%"));
+            }
+
+            var users = await queryable
+                .OrderBy(x => x.FirstName)
+                .ThenBy(x => x.LastName)
+                .Paginate(pagination)
+                .ToListAsync();
+
+            return new ActionResponse<IEnumerable<User>>
+            {
+                WasSuccess = true,
+                Result = users
+            };
+        }
+
+        public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+        {
+            IQueryable<User> queryable = _context.Users;
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                string filter = pagination.Filter.Trim();
+
+                queryable = queryable.Where(x =>
+                    EF.Functions.Like(x.FirstName, $"%{filter}%") ||
+                    EF.Functions.Like(x.LastName, $"%{filter}%"));
+            }
+
+            int count = await queryable.CountAsync();
+
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = count
+            };
+        }
+
+        public async Task<ActionResponse<IEnumerable<ListUsersDTO>>> GetListAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Users
+                .Include(x => x.Province!)
+                .ThenInclude(p => p.Department)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                string filter = pagination.Filter.Trim();
+
+                queryable = queryable.Where(x =>
+                    EF.Functions.Like(x.FirstName, $"%{filter}%") ||
+                    EF.Functions.Like(x.LastName, $"%{filter}%"));
+            }
+
+            var users = await queryable
+                .OrderBy(x => x.FirstName)
+                .ThenBy(x => x.LastName)
+                .Paginate(pagination)
+                .Select(x => new ListUsersDTO
+                {
+                    Id = x.Id,
+                    Document = x.Document,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email!,
+                    PhoneNumber = x.PhoneNumber!,
+                    Photo = x.Photo,
+                    UserType = x.UserType,
+                    ProvinceId = x.ProvinceId,
+                    Province = x.Province!.Name,
+                    Department = x.Province!.Department!.Name
+                })
+                .ToListAsync();
+
+            return new ActionResponse<IEnumerable<ListUsersDTO>>
+            {
+                WasSuccess = true,
+                Result = users
+            };
+        }
+
     }
 }

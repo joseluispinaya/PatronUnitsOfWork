@@ -2,6 +2,7 @@
 using Capa.Backend.UnitsOfWork.Intefaces;
 using Capa.Shared.DTOs;
 using Capa.Shared.Entities;
+using Capa.Shared.Responses;
 using Microsoft.AspNetCore.Identity;
 
 namespace Capa.Backend.UnitsOfWork.Implementations
@@ -30,5 +31,11 @@ namespace Capa.Backend.UnitsOfWork.Implementations
         public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model);
 
         public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
+
+        public async Task<ActionResponse<IEnumerable<User>>> GetAsync(PaginationDTO pagination) => await _usersRepository.GetAsync(pagination);
+
+        public async Task<ActionResponse<IEnumerable<ListUsersDTO>>> GetListAsync(PaginationDTO pagination) => await _usersRepository.GetListAsync(pagination);
+
+        public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _usersRepository.GetTotalRecordsAsync(pagination);
     }
 }

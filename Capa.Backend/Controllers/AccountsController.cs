@@ -26,9 +26,36 @@ namespace Capa.Backend.Controllers
             _imageHelper = imageHelper;
         }
 
+        [HttpGet("paginated")]
+        public async Task<IActionResult> GetPaginated([FromQuery] PaginationDTO pagination)
+        {
+            var response = await _usersUnitOfWork.GetListAsync(pagination);
+
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("totalRecords")]
+        public async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _usersUnitOfWork.GetTotalRecordsAsync(pagination);
+            if (action.WasSuccess)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromForm] UserCreateDTO model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             // Subir foto
             string photoPath = string.Empty;
