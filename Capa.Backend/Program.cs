@@ -80,7 +80,11 @@ builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ICategoriesUnitOfWork, CategoriesUnitOfWork>();
-//builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IProductsUnitOfWork, ProductsUnitOfWork>();
+builder.Services.AddScoped<IProductitosRepository, ProductitosRepository>();
+builder.Services.AddScoped<IProductitosUnitOfWork, ProductitosUnitOfWork>();
+//builder.Services.AddScoped<IProductitosUnitOfWork, ProductitosUnitOfWork>();
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {

@@ -5,32 +5,45 @@ namespace Capa.Backend.DTOas
 {
     public class UserCreateDTO
     {
-        [Required]
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Debes ingresar un correo válido.")]
         public string Email { get; set; } = null!;
 
-        [Required]
+        [Display(Name = "Documento")]
+        [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Document { get; set; } = null!;
 
-        [Required]
+        [Display(Name = "Nombres")]
+        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string FirstName { get; set; } = null!;
 
-        [Required]
+        [Display(Name = "Apellidos")]
+        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string LastName { get; set; } = null!;
 
-        [Required]
+        [Display(Name = "Dirección")]
+        [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Address { get; set; } = null!;
 
-        [Required]
+        [Display(Name = "Telefono")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string PhoneNumber { get; set; } = null!;
 
-        [Required]
+        [Display(Name = "Provincia")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una {0}.")]
         public int ProvinceId { get; set; }
 
         [Required]
         public UserType UserType { get; set; }
 
-        [Required]
-        [StringLength(20, MinimumLength = 6)]
+        [Display(Name = "Contraseña")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [MinLength(6, ErrorMessage = "El campo {0} debe tener al menos {1} carácteres.")]
         public string Password { get; set; } = null!;
 
         // FOTO
