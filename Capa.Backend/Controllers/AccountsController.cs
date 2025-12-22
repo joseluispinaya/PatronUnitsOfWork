@@ -3,6 +3,8 @@ using Capa.Backend.Helpers;
 using Capa.Backend.UnitsOfWork.Intefaces;
 using Capa.Shared.DTOs;
 using Capa.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -47,6 +49,48 @@ namespace Capa.Backend.Controllers
                 return Ok(action.Result);
             }
             return BadRequest();
+        }
+
+        [HttpPost("changePassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(x => x.Value!.Errors.Count > 0)
+                    .ToDictionary(
+                        x => x.Key,
+                        x => x.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+
+                return BadRequest(errors);
+            }
+
+            var email = User.Claims
+                .FirstOrDefault(c => c.Type == "Email")?
+                .Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return Unauthorized();
+            }
+
+            var user = await _usersUnitOfWork.GetUserAsync(email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _usersUnitOfWork
+                .ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors.Select(e => e.Description));
+            }
+
+            return NoContent();
         }
 
         [HttpPost("CreateUser")]

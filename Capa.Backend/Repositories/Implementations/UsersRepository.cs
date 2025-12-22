@@ -172,5 +172,9 @@ namespace Capa.Backend.Repositories.Implementations
             };
         }
 
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
     }
 }

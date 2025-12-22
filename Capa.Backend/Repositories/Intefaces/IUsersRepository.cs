@@ -17,6 +17,8 @@ namespace Capa.Backend.Repositories.Intefaces
 
         Task LogoutAsync();
 
+        Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
         Task<User> GetUserAsync(Guid userId);
 
         Task<User> GetUserAsync(string email);
