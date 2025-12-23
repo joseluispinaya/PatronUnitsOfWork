@@ -3,6 +3,7 @@ using Capa.Backend.Helpers;
 using Capa.Backend.UnitsOfWork.Intefaces;
 using Capa.Shared.DTOs;
 using Capa.Shared.Entities;
+using Capa.Shared.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +20,15 @@ namespace Capa.Backend.Controllers
     {
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IConfiguration _configuration;
+        private readonly IMailHelper _mailHelper;
         private readonly IImageHelper _imageHelper;
 
-        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IImageHelper imageHelper)
+        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IImageHelper imageHelper, IMailHelper mailHelper)
         {
             _usersUnitOfWork = usersUnitOfWork;
             _configuration = configuration;
             _imageHelper = imageHelper;
+            _mailHelper = mailHelper;
         }
 
         [HttpGet("paginated")]
@@ -50,6 +53,37 @@ namespace Capa.Backend.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPost("RecoverPassword")]
+        public async Task<ActionResult> RecoverPassword([FromBody] EmailDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(x => x.Value!.Errors.Count > 0)
+                    .ToDictionary(
+                        x => x.Key,
+                        x => x.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+
+                return BadRequest(errors);
+            }
+
+            User user = await _usersUnitOfWork.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound("Usuario no existe con el correo enviado.");
+            }
+
+            var response = SendEmail(user);
+            if (response.WasSuccess)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(response.Message);
+        }
+
 
         [HttpPost("changePassword")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -187,6 +221,16 @@ namespace Capa.Backend.Controllers
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration
             };
+        }
+
+        private ActionResponse<string> SendEmail(User user)
+        {
+            var valorLink = "ResetPassword";
+
+            return _mailHelper.SendMail(user.FullName, user.Email!,
+                $"Tienda - Recuperación de contraseña",
+                $"<h1>Sales - Recuperación de contraseña</h1>" +
+                $"<p>Para recuperar su contraseña, valor del enlace es {valorLink}</p>");
         }
 
     }

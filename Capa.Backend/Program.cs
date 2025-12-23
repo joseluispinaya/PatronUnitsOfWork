@@ -56,6 +56,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
 builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
+builder.Services.AddScoped<IMailHelper, MailHelper>();
 //builder.Services.AddScoped<IImageHelper, ImageHelper>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
